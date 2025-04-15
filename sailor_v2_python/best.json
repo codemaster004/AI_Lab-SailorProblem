@@ -1,0 +1,98 @@
+{
+    "3": [
+        -55.47987499999999,
+        {
+            "N_INDIVIDUALS": 14,
+            "N_EPISODES": 4,
+            "P_CROSS": 0.723,
+            "P_MUT": 0.0005,
+            "SELECTIVE_PRESSURE": 1.156,
+            "N_SPLITS": 0,
+            "REPRODUCTION": "<function reproduction_rank at 0x107bbe170>"
+        }
+    ],
+    "7": [
+        -62.071875,
+        {
+            "N_INDIVIDUALS": 18,
+            "N_EPISODES": 4,
+            "P_CROSS": 0.003,
+            "P_MUT": 0.23825,
+            "SELECTIVE_PRESSURE": 1.973,
+            "N_SPLITS": 0,
+            "REPRODUCTION": "<function reproduction_rank at 0x10981a170>"
+        }
+    ],
+    "4": [
+        -67.396875,
+        {
+            "N_INDIVIDUALS": 16,
+            "N_EPISODES": 4,
+            "P_CROSS": 0.261,
+            "P_MUT": 0.01175,
+            "SELECTIVE_PRESSURE": 1.142,
+            "N_SPLITS": 0,
+            "REPRODUCTION": "<function reproduction_rank at 0x10621e170>"
+        }
+    ],
+    "0": [
+        -60.616625000000006,
+        {
+            "N_INDIVIDUALS": 14,
+            "N_EPISODES": 4,
+            "P_CROSS": 0.533,
+            "P_MUT": 0.03375,
+            "SELECTIVE_PRESSURE": 1.59,
+            "N_SPLITS": 0,
+            "REPRODUCTION": "<function reproduction_rank at 0x10485e170>"
+        }
+    ],
+    "6": [
+        -52.751875,
+        {
+            "N_INDIVIDUALS": 17,
+            "N_EPISODES": 4,
+            "P_CROSS": 0.588,
+            "P_MUT": 0.094,
+            "SELECTIVE_PRESSURE": 1.705,
+            "N_SPLITS": 0,
+            "REPRODUCTION": "<function reproduction_rank at 0x10a0ea170>"
+        }
+    ],
+    "1": [
+        -58.683375,
+        {
+            "N_INDIVIDUALS": 19,
+            "N_EPISODES": 4,
+            "P_CROSS": 0.076,
+            "P_MUT": 0.111,
+            "SELECTIVE_PRESSURE": 1.853,
+            "N_SPLITS": 0,
+            "REPRODUCTION": "<function reproduction_rank at 0x1074e2170>"
+        }
+    ],
+    "5": [
+        -53.551375,
+        {
+            "N_INDIVIDUALS": 11,
+            "N_EPISODES": 4,
+            "P_CROSS": 0.317,
+            "P_MUT": 0.08,
+            "SELECTIVE_PRESSURE": 1.638,
+            "N_SPLITS": 0,
+            "REPRODUCTION": "<function reproduction_rank at 0x107aba170>"
+        }
+    ],
+    "2": [
+        -64.539625,
+        {
+            "N_INDIVIDUALS": 15,
+            "N_EPISODES": 4,
+            "P_CROSS": 0.72,
+            "P_MUT": 0.0545,
+            "SELECTIVE_PRESSURE": 1.034,
+            "N_SPLITS": 0,
+            "REPRODUCTION": "<function reproduction_rank at 0x109bbe170>"
+        }
+    ]
+}
