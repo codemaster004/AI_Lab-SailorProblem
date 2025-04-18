@@ -34,9 +34,9 @@ N_SPLITS = 5
 
 # Task definition parameters ............ (begin from easy one, and try mid one later)
 # file_name = 'map_small.txt'
-file_name = 'map_easy.txt'  # THIS ONE FIRST
+# file_name = 'map_easy.txt'  # THIS ONE FIRST
 # file_name = 'map_mid.txt'
-# file_name = 'map_big.txt'  # THIS ONE
+file_name = 'map_big.txt'  # THIS ONE
 # file_name = 'map_spiral.txt'
 GAMMA = 1.0  # discount factor (part of a task). If gamma < 1, rewards with longer time distance are less important
 # (it pays an agent to get positive rewards as soon as possible and penalties as long as possible)
@@ -120,14 +120,8 @@ def crossover_multi_point(parent1: np.ndarray, parent2: np.ndarray, n_points=2):
 
 
 def crossover_uniform(parent1: np.ndarray, parent2: np.ndarray, p=0.5):
-	shape = parent1.shape
-	parent1, parent2 = parent1.flatten(), parent2.flatten()
-	length = len(parent1)
-	
-	mask = np.random.rand(length) < p
+	mask = np.random.rand(*parent1.shape) < p
 	child = np.where(mask, parent1, parent2)
-	child.resize(shape)
-	
 	return child
 
 
@@ -154,7 +148,6 @@ def main(
 		selective_pressure=1.0,
 		n_splits=1,
 		reproduction=None):
-	start_time = time.time()
 	maximum_mean_sum_of_rewards = -1000000000
 	
 	best_strategy = population[0]
@@ -219,8 +212,6 @@ def main(
 	if show:
 		print('Average sum of rewards for best strategy = ' + str(mean_sum_of_rewards))
 		sf.draw(reward_map, best_strategy, mean_sum_of_rewards)
-	end_time = time.time()
-	print('Elapsed time = ' + str(end_time - start_time))
 	return mean_sum_of_rewards
 
 
@@ -288,15 +279,20 @@ def worker_seed_search(num):
 	
 	best_reward = float("-inf")
 	best_seed = 0
-	N_ = 5
 	START_ = 0
-	for i in range(N_):
-		N_INDIVIDUALS_ = best_indi[str(num)][1]['N_INDIVIDUALS']
-		N_EPISODES_ = best_indi[str(num)][1]['N_EPISODES']
+	
+	N_ = 5
+	# for i in range(N_):
+	i = num
+	while True:
+		N_INDIVIDUALS_ = best_indi[str(0)][1]['N_INDIVIDUALS']
+		N_EPISODES_ = best_indi[str(0)][1]['N_EPISODES']
 		N_EPOCHS_ = number_of_sumulations // (N_INDIVIDUALS_ * N_EPISODES_)
-		P_CROSS_ = best_indi[str(num)][1]['P_CROSS']
-		P_MUT_ = best_indi[str(num)][1]['P_MUT']
-		SELECTIVE_PRESSURE_ = best_indi[str(num)][1]['SELECTIVE_PRESSURE']
+		
+		P_CROSS_ = best_indi[str(0)][1]['P_CROSS']
+		P_MUT_ = best_indi[str(0)][1]['P_MUT']
+		SELECTIVE_PRESSURE_ = best_indi[str(0)][1]['SELECTIVE_PRESSURE']
+		
 		N_SPLITS_ = 0
 		REPRODUCTION_ = reproduction_rank
 		
@@ -321,7 +317,13 @@ def worker_seed_search(num):
 		if r > best_reward:
 			best_reward = r
 			best_seed = seed
-			print(num, i, best_reward, seed, best_indi[str(num)])
+			print('R:', best_reward, 'S:', seed, num, i, best_indi[str(0)])
+		
+		if r > 0.0:
+			print(num, i, best_reward, seed, best_indi[str(0)])
+			print("!!!!! HERE !!!!!")
+		
+		i += N_THREADS
 	print(seed, best_reward, best_seed, best_indi[str(num)])
 
 
@@ -359,36 +361,36 @@ if __name__ == '__main__':
 	# 	p.join()
 	# print("All processes completed.")
 	
-	# processes = []
-	# for i in range(N_THREADS):
-	# 	p = mp.Process(target=worker_seed_search, args=(i,))
-	# 	processes.append(p)
-	# 	p.start()
-	# for p in processes:
-	# 	p.join()
-	# print("All processes completed.")
+	processes = []
+	for i in range(N_THREADS):
+		p = mp.Process(target=worker_seed_search, args=(i,))
+		processes.append(p)
+		p.start()
+	for p in processes:
+		p.join()
+	print("All processes completed.")
 	
-	N_INDIVIDUALS_ = 16
-	N_EPISODES_ = 18
-	N_EPOCHS_ = number_of_sumulations // (N_INDIVIDUALS_ * N_EPISODES_)
-	P_CROSS_ = np.float64(0.877)
-	P_MUT_ = np.float64(0.706)
-	SELECTIVE_PRESSURE_ = np.float64(1.023)
-	N_SPLITS_ = 12
-	REPRODUCTION_ = reproduction_rank
-
-	np.random.seed(557)
-
-	Popul = np.random.randint(1, 5, (N_INDIVIDUALS_, num_of_rows, num_of_columns))
-	r = main(
-		Popul,
-		show=False,
-		n_individuals=N_INDIVIDUALS_,
-		n_episodes=N_EPISODES_,
-		n_epochs=N_EPOCHS_,
-		p_cross=P_CROSS_,
-		p_mut=P_MUT_,
-		selective_pressure=SELECTIVE_PRESSURE_,
-		n_splits=N_SPLITS_,
-		reproduction=REPRODUCTION_
-	)
+	# N_INDIVIDUALS_ = 10
+	# N_EPISODES_ = 4
+	# N_EPOCHS_ = number_of_sumulations // (N_INDIVIDUALS_ * N_EPISODES_)
+	# P_CROSS_ = np.float64(0.5)
+	# P_MUT_ = np.float64(0.02)
+	# SELECTIVE_PRESSURE_ = np.float64(1.59)
+	# N_SPLITS_ = 12
+	# REPRODUCTION_ = reproduction_rank
+	# 
+	# np.random.seed(557)
+	# 
+	# Popul = np.random.randint(1, 5, (N_INDIVIDUALS_, num_of_rows, num_of_columns))
+	# r = main(
+	# 	Popul,
+	# 	show=False,
+	# 	n_individuals=N_INDIVIDUALS_,
+	# 	n_episodes=N_EPISODES_,
+	# 	n_epochs=N_EPOCHS_,
+	# 	p_cross=P_CROSS_,
+	# 	p_mut=P_MUT_,
+	# 	selective_pressure=SELECTIVE_PRESSURE_,
+	# 	n_splits=N_SPLITS_,
+	# 	reproduction=REPRODUCTION_
+	# )

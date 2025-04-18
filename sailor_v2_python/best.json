@@ -38,13 +38,12 @@
     "0": [
         -60.616625000000006,
         {
-            "N_INDIVIDUALS": 14,
+            "N_INDIVIDUALS": 10,
             "N_EPISODES": 4,
-            "P_CROSS": 0.533,
-            "P_MUT": 0.03375,
+            "P_CROSS": 0.5,
+            "P_MUT": 0.02,
             "SELECTIVE_PRESSURE": 1.59,
-            "N_SPLITS": 0,
-            "REPRODUCTION": "<function reproduction_rank at 0x10485e170>"
+            "N_SPLITS": 0
         }
     ],
     "6": [
