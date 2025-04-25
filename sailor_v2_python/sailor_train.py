@@ -40,45 +40,42 @@ def pick_action_softmax(Q, state, temp):
 	soft_a /= soft_a.sum()
 	return np.random.choice(np.arange(len(soft_a)), 1, p=soft_a)[0]
 
-def train():
-	num_of_steps_max = int(2.5 * (num_of_rows + num_of_columns))  # maximum number of steps in an episode
-	Q = np.zeros([num_of_rows, num_of_columns, 4], dtype=float)  # trained usability table of <state,action> pairs
-	sum_of_rewards = np.zeros([N_EPISODES], dtype=float)
+
+def train(Q, p_alpha, p_gamma, p_epsilon, board_shape):
+	num_of_steps_max = int(2.5 * (board_shape[0] + board_shape[1]))
 	
+	# sum_of_rewards = np.zeros([N_EPISODES], dtype=float)
 	for episode in range(N_EPISODES):
-		state = np.zeros((2,), dtype=int)
-		state[0] = np.random.randint(0, num_of_rows)
+		s = np.zeros((2,), dtype=int)
+		s[0] = np.random.randint(0, board_shape[0])
 		
 		the_end = False
 		nr_pos = 0
-		# reward_map_curr = reward_map
 		while not the_end:
 			nr_pos += 1  # move count
 			
 			# Action choosing
-			# action = pick_action_softmax(Q, state, TEMP)
-			action = pick_action_argmax(Q, state, EPSILON)
-			
-			state_next, reward = sf.environment(state, action, reward_map)
+			a = pick_action_argmax(Q, s, p_epsilon)
+			s_prim, r = sf.environment(s, a, reward_map)
 			
 			# State-action usability modification:
-			Q[state[0], state[1], action - 1] += ALPHA * (
-					reward + GAMMA * np.max(Q[state_next[0], state_next[1], :]) - Q[state[0], state[1], action - 1])
+			Q[s[0], s[1], a - 1] += p_alpha * (r + p_gamma * np.max(Q[s_prim[0], s_prim[1], :]) - Q[s[0], s[1], a - 1])
 			
-			state = state_next  # going to the next state
-			
-			if (nr_pos == num_of_steps_max) | (state[1] >= num_of_columns - 1):
+			s = s_prim  # going to the next state
+			if nr_pos == num_of_steps_max or s[1] >= board_shape[1] - 1:
 				the_end = True
-			
-			sum_of_rewards[episode] += reward
-
-for i in range(100):
-	np.random.seed(i)
 	
-	
-	# if episode % 500 == 0:
-	# 	print('episode = ' + str(episode) + ' reward = ' + str(sum_of_rewards[episode]))
+	# sum_of_rewards[episode] += reward
 
-	r = sf.sailor_test(reward_map, Q, 1000)
-	print(f"i={i}, r={r}")
+if __name__ == '__main__':
+    
+	for i in range(100):
+		np.random.seed(i)
+		Q_table = np.zeros([num_of_rows, num_of_columns, 4], dtype=float)
+		train(Q_table, ALPHA, GAMMA, EPSILON, reward_map.shape)
+		# if episode % 500 == 0:
+		# 	print('episode = ' + str(episode) + ' reward = ' + str(sum_of_rewards[episode]))
+		
+		reward = sf.sailor_test(reward_map, Q_table, 1000)
+		print(f"i={i}, r={reward}")
 	# sf.draw(reward_map, Q, file_name, reward=r)
