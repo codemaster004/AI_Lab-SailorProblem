@@ -1,8 +1,5 @@
 import time
-import os
-import pdb
 import numpy as np
-import matplotlib.pyplot as plt
 import sailor_funct_q as sf
 
 from multiprocessing import Process, shared_memory
@@ -86,12 +83,12 @@ def worker_collect_samples(worker_num, n_workers, n_samples, train_params, cpv, 
 
 
 if __name__ == '__main__':
-	N_WORKERS = 20
-	N_SAMPLES = 50
+	N_WORKERS = 25
+	N_SAMPLES = 4
 	
-	ALPHA_POINTS = 100
-	EPSILON_POINTS = 80
-	GAMMA_POINTS = 30
+	ALPHA_POINTS = 15
+	EPSILON_POINTS = 15
+	GAMMA_POINTS = 10
 	
 	data = np.zeros((ALPHA_POINTS, EPSILON_POINTS, GAMMA_POINTS, N_WORKERS * N_SAMPLES,), dtype=float)
 	
@@ -101,7 +98,7 @@ if __name__ == '__main__':
 	sh_arr[:] = data[:]  # Copy data into shared memory
 	
 	alpha_linspace = np.linspace(0.001, 0.1, ALPHA_POINTS)
-	epsilon_linspace = np.linspace(0.1, 0.9, EPSILON_POINTS)
+	epsilon_linspace = np.linspace(0.2, 0.8, EPSILON_POINTS)
 	gamma_linspace = np.linspace(0.75, 0.99, GAMMA_POINTS)
 	for i, a in enumerate(alpha_linspace):
 		for j, e in enumerate(epsilon_linspace):
@@ -126,6 +123,7 @@ if __name__ == '__main__':
 				for p in processes:
 					p.join()
 				print(f"DONE ({round(time.time() - start)}s) {current_param_vector} {params}")
+		np.save(f'params_samples-{i}.npy', sh_arr)
 	
 	# print(shared_arr)
 	np.save('params_samples.npy', sh_arr)
