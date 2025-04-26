@@ -1,0 +1,5 @@
+gradio~=5.27.0
+matplotlib~=3.10.1
+numpy~=2.2.4
+scipy~=1.15.2
+colorspacious~=1.1.2
