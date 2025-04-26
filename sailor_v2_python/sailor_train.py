@@ -113,6 +113,8 @@ if __name__ == '__main__':
 				}
 				current_param_vector = (i, j, k)
 				
+				print(f"Starting {current_param_vector}")
+				start = time.time()
 				processes = [
 					Process(target=worker_collect_samples,
 					        args=(worker_id, N_WORKERS, N_SAMPLES, params, current_param_vector, shm.name, sh_arr.shape))
@@ -123,7 +125,7 @@ if __name__ == '__main__':
 					p.start()
 				for p in processes:
 					p.join()
-				print("DONE", current_param_vector, params)
+				print(f"DONE ({round(time.time() - start)}s) {current_param_vector} {params}")
 	
 	# print(shared_arr)
 	np.save('params_samples.npy', sh_arr)
