@@ -86,12 +86,12 @@ def worker_collect_samples(worker_num, n_workers, n_samples, train_params, cpv, 
 
 
 if __name__ == '__main__':
-	N_WORKERS = 2
-	N_SAMPLES = 10
+	N_WORKERS = 20
+	N_SAMPLES = 50
 	
-	ALPHA_POINTS = 2
-	EPSILON_POINTS = 2
-	GAMMA_POINTS = 2
+	ALPHA_POINTS = 100
+	EPSILON_POINTS = 80
+	GAMMA_POINTS = 30
 	
 	data = np.zeros((ALPHA_POINTS, EPSILON_POINTS, GAMMA_POINTS, N_WORKERS * N_SAMPLES,), dtype=float)
 	
